@@ -6,35 +6,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Trang đăng nhập</title>
 </head>
 <body>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<form action="login" method="post" class="container mt-4"
+		style="max-width: 400px;">
+		<h2 class="text-center mb-3">LOGIN</h2>
 
-	<form action="login" method="post">
-		<h2>Đăng nhập</h2>
-		<c:if test="${alert !=null}">
-			<h3 class="alert alertdanger">${alert}</h3>
+		<!-- Thông báo lỗi -->
+		<c:if test="${alert != null}">
+			<div class="alert alert-danger text-center">${alert}</div>
 		</c:if>
-		<section>
-			<label class="input login-input">
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-user"></i></span> <input
-						type="text" placeholder="Tài khoản" name="username" 
-						class="form-control">
-						
-				</div>
-				
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
-						type="password" placeholder="Mật khẩu" name="password" 
-						class="form-control">
-						
-				</div>
-				
-				<button type="submit">Login</button>
-				
-			</label>
-		</section>
+
+		<!-- Tài khoản -->
+		<div class="mb-3 input-group">
+			<span class="input-group-text"><i class="fa fa-user"></i></span> <input
+				type="text" class="form-control" name="username"
+				placeholder="Tài khoản" required>
+		</div>
+
+
+		<!-- Mật khẩu -->
+		<div class="mb-3 input-group">
+			<span class="input-group-text"><i class="fa fa-lock"></i></span> <input
+				type="password" class="form-control" name="password"
+				placeholder="Mật khẩu" required>
+		</div>
+
+		<div class="d-grid">
+			<button type="submit" class="btn btn-primary">Đăng nhập</button>
+		</div>
+
+		<p class="text-center mt-3">
+			Nếu bạn chưa có tài khoản? <a href="register.jsp">Đăng ký</a>
+		</p>
+	</form>
+
+	<!-- Thêm link Bootstrap và Font Awesome -->
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </body>
 </html>

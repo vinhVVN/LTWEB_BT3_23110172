@@ -31,7 +31,6 @@ public class LoginController extends HttpServlet{
 		resp.setContentType("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-		PrintWriter pw = resp.getWriter();
 		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");

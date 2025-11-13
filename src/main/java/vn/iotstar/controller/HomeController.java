@@ -28,7 +28,12 @@ public class HomeController extends HttpServlet{
 		if (session != null) {
 			User user = (User) session.getAttribute("account");
 			if (user != null) {
-				pw.print("Hello " + user.getUsername() + "!!!");
+				pw.print("Hello " + user.getFullname() + "!!!<br>");
+				pw.print("Thông tin cá nhân:<br>");
+				pw.print("Tài khoản: " + user.getUsername() + "<br>");
+				pw.print("Số điện thoại: " + user.getPhone() + "<br>");
+				pw.print("Ngày tạo: " + user.getCreatedDate().toString() + "<br>");
+
 			}else {
 				pw.print("Please login again");
 				resp.sendRedirect("login.jsp");

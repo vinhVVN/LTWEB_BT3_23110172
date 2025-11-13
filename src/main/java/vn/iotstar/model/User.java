@@ -1,6 +1,7 @@
 package vn.iotstar.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable{
 
@@ -11,12 +12,52 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private String email;
-	public User(int id, String username, String password, String email) {
+	private String fullname;
+	private String avatar;
+	private int roleid;
+	private String phone;
+	private Date createdDate;
+	public User(String username, String password, String email, String fullname, String avatar, int roleid,
+			String phone, Date createdDate) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.fullname = fullname;
+		this.avatar = avatar;
+		this.roleid = roleid;
+		this.phone = phone;
+		this.createdDate = createdDate;
+	}
+	public String getFullname() {
+		return fullname;
+	}
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public int getRoleid() {
+		return roleid;
+	}
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 	public int getId() {
 		return id;
