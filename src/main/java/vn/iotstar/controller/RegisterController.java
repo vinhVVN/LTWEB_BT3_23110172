@@ -14,6 +14,9 @@ import vn.iotstar.service.impl.UserServiceImpl;
 @WebServlet(urlPatterns = { "/register" })
 public class RegisterController extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
@@ -21,6 +24,7 @@ public class RegisterController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/home");
 			return;
 		}
+		req.getRequestDispatcher("views/register.jsp").forward(req, resp);
 	}
 	
 	
@@ -39,20 +43,20 @@ public class RegisterController extends HttpServlet {
 		if (service.checkExistEmail(email)) {
 			alertMsg = "Email đã tồn tại!";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("register.jsp").forward(req, resp);
+			req.getRequestDispatcher("views/register.jsp").forward(req, resp);
 			return;
 		}
 		if (service.checkExistUsername(username)) {
 			alertMsg = "Tài khoản đã tồn tại!";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("register.jsp").forward(req, resp);
+			req.getRequestDispatcher("views/register.jsp").forward(req, resp);
 			return;
 		}
 		
 		if (service.checkExistPhone(phone)) {
 			alertMsg = "SĐT đã tồn tại!";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("register.jsp").forward(req, resp);
+			req.getRequestDispatcher("views/register.jsp").forward(req, resp);
 			return;
 		}
 		
@@ -63,7 +67,7 @@ public class RegisterController extends HttpServlet {
 		} else {
 			alertMsg = "System error!";
 			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("register.jsp").forward(req, resp);
+			req.getRequestDispatcher("views/register.jsp").forward(req, resp);
 		}
 		
 	}

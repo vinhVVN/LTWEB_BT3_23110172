@@ -53,4 +53,15 @@ public class UserServiceImpl implements UserService {
 		return userDAO.checkExistPhone(phone);
 	}
 
+	@Override
+	public User findByEmail(String email) {
+		return userDAO.findByEmail(email);
+	}
+
+	@Override
+	public void updatePassword(int id, String newpass) {
+		userDAO.updatePassword(id, newpass);
+		
+	}
+
 }

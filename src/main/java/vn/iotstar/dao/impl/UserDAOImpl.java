@@ -31,6 +31,7 @@ public class UserDAOImpl implements UserDAO{
 				user.setAvatar(rs.getString("avatar"));
 				user.setPhone(rs.getString("phone"));
 				user.setCreatedDate(rs.getDate("createdDate"));
+				user.setRoleid(rs.getInt("roleid"));
 				return user;
 			}
 		} catch (Exception e) {
@@ -116,5 +117,47 @@ public class UserDAOImpl implements UserDAO{
 		} catch (Exception ex) {
 		}
 		return duplicate;
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		String sql = "SELECT * FROM [User] WHERE email = ? ";
+		try {
+			conn = new DBConnectionSQLServer().getConnectionW();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setFullname(rs.getString("fullname"));
+				user.setAvatar(rs.getString("avatar"));
+				user.setPhone(rs.getString("phone"));
+				user.setCreatedDate(rs.getDate("createdDate"));
+				user.setRoleid(rs.getInt("roleid"));
+				return user;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public void updatePassword(int id, String newpass) {
+		String sql = "UPDATE [User] SET password = ? WHERE id = ?";
+		try {
+			conn = new DBConnectionSQLServer().getConnectionW();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, newpass);
+			ps.setInt(2, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
