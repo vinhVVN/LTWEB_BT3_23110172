@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.iotstar.model.Category;
+import vn.iotstar.entity.Category;
 import vn.iotstar.service.CategoryService;
 import vn.iotstar.service.impl.CategoryServiceImpl;
 
@@ -21,11 +21,14 @@ public class CategoryController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<Category> cateList = cateService.getAll();
-		req.setAttribute("cateList", cateList);
-		System.out.println("Số lượng category: " + cateList.size());
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/list-category.jsp");
-		dispatcher.forward(req, resp);
+		// Lấy danh sách từ Service
+        List<Category> list = cateService.findAll();
+        
+        // Đẩy dữ liệu ra view
+        req.setAttribute("categories", list);
+        
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/list-category.jsp");
+        dispatcher.forward(req, resp);
 		
 	}
 }

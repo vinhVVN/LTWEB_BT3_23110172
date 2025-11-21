@@ -4,7 +4,7 @@ import java.util.List;
 
 import vn.iotstar.dao.CategoryDAO;
 import vn.iotstar.dao.impl.CategoryDAOImpl;
-import vn.iotstar.model.Category;
+import vn.iotstar.entity.Category;
 import vn.iotstar.service.CategoryService;
 
 public class CategoryServiceImpl implements CategoryService{
@@ -17,39 +17,31 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public void edit(Category newCategory) {
-		Category oldCate = cateDAO.get(newCategory.getCateid());
-		oldCate.setCatename(newCategory.getCatename());
-		oldCate.setIcon(newCategory.getIcon());
-		cateDAO.edit(oldCate);
+	public void update(Category newCategory) {
+		cateDAO.update(newCategory);
 		
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(int id) throws Exception {
 		cateDAO.delete(id);
 		
 	}
 
 	@Override
-	public Category get(int id) {
-		return cateDAO.get(id);
+	public Category findById(int id) {
+		return cateDAO.findById(id);
 	}
 
 	@Override
-	public Category get(String name) {
-		return cateDAO.get(name);
+	public List<Category> findByName(String name) {
+		return cateDAO.findByName(name);
 	}
 
 	@Override
-	public List<Category> getAll() {
-		return cateDAO.getAll();
+	public List<Category> findAll() {
+		return cateDAO.findAll();
 	}
 
-	@Override
-	public List<Category> search(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }

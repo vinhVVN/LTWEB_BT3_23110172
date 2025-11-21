@@ -1,6 +1,6 @@
 package vn.iotstar.service;
 
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 
 public interface UserService {
 	User login(String username, String password);
@@ -12,9 +12,10 @@ public interface UserService {
 			String phone);
 	boolean checkExistEmail(String email);
 	boolean checkExistUsername(String username);
-	boolean checkExistPhone(String phone);
 	
 	User findByEmail(String email);
 	
 	void updatePassword(int id, String newpass);
+	
+	void update(User user);
 }

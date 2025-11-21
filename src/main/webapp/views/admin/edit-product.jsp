@@ -150,6 +150,7 @@
             <label class="form-label mt-3">Đổi ảnh mới</label>
             <input type="file" name="image" class="form-control" accept="image/*"
                    onchange="previewImage(event)">
+            
 
             <img id="preview" class="img-preview">
             <small class="text-muted">Để trống nếu không muốn đổi ảnh.</small>

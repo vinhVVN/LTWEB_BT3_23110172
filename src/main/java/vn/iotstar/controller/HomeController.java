@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 
 @WebServlet(urlPatterns = {"/hi","/home"})
 public class HomeController extends HttpServlet{

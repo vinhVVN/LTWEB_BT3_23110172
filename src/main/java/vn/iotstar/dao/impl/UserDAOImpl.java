@@ -1,162 +1,120 @@
 package vn.iotstar.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 
-import vn.iotstar.configs.DBConnectionSQLServer;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+import vn.iotstar.configs.JPAConfig;
 import vn.iotstar.dao.UserDAO;
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 
 public class UserDAOImpl implements UserDAO{
 	public Connection conn = null;
 	public PreparedStatement ps = null;
 	public ResultSet rs = null;
 
-	public User get(String username) {
-		String sql = "SELECT * FROM [User] WHERE username = ? ";
-		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setFullname(rs.getString("fullname"));
-				user.setAvatar(rs.getString("avatar"));
-				user.setPhone(rs.getString("phone"));
-				user.setCreatedDate(rs.getDate("createdDate"));
-				user.setRoleid(rs.getInt("roleid"));
-				return user;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	@Override
 	public void insert(User user) {
-		String sql = "INSERT INTO [User](email, username, fullname, password, avatar, roleid,"
-				+ "phone, createdDate) VALUES (?,?,?,?,?,?,?,?)";
+		EntityManager em = JPAConfig.getEnityManager();
+		EntityTransaction trans = em.getTransaction();
 		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, user.getEmail());
-			ps.setString(2, user.getUsername());
-			ps.setString(3, user.getFullname());
-			ps.setString(4, user.getPassword());
-			ps.setString(5, user.getAvatar());
-			ps.setInt(6,user.getRoleid());
-			ps.setString(7,user.getPhone());
-			ps.setDate(8, (Date)user.getCreatedDate());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+			trans.begin();
+			em.persist(user);
+			trans.commit();
+		}catch (Exception ex){
+			ex.printStackTrace();
+			trans.rollback();
+		}finally {
+			em.close();
 		}
 		
 	}
 
 	@Override
 	public boolean checkExistEmail(String email) {
-		boolean duplicate = false;
-		String query = "select * from [User] where email = ?";
+		EntityManager em = JPAConfig.getEnityManager();
 		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				duplicate = true;
-			}
-			ps.close();
-			conn.close();
-		} catch (Exception ex) {
+			List<User> users = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+									.setParameter("email", email)
+									.getResultList();
+			return !users.isEmpty();
+		}finally {
+			em.close();
 		}
-		return duplicate;
 	}
 
 	@Override
 	public boolean checkExistUsername(String username) {
-		boolean duplicate = false;
-		String query = "select * from [User] where username = ?";
+		EntityManager em = JPAConfig.getEnityManager();
 		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, username);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				duplicate = true;
-			}
-			ps.close();
-			conn.close();
-		} catch (Exception ex) {
+			List<User> users = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+									.setParameter("username", username)
+									.getResultList();
+			return !users.isEmpty();
+		}finally {
+			em.close();
 		}
-		return duplicate;
 	}
 
-	@Override
-	public boolean checkExistPhone(String phone) {
-		boolean duplicate = false;
-		String query = "select * from [User] where phone = ?";
-		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, phone);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				duplicate = true;
-			}
-			ps.close();
-			conn.close();
-		} catch (Exception ex) {
-		}
-		return duplicate;
-	}
 
 	@Override
 	public User findByEmail(String email) {
-		String sql = "SELECT * FROM [User] WHERE email = ? ";
-		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setFullname(rs.getString("fullname"));
-				user.setAvatar(rs.getString("avatar"));
-				user.setPhone(rs.getString("phone"));
-				user.setCreatedDate(rs.getDate("createdDate"));
-				user.setRoleid(rs.getInt("roleid"));
-				return user;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		EntityManager em = JPAConfig.getEnityManager();
+		return em.find(User.class, email);
 	}
 
 	@Override
 	public void updatePassword(int id, String newpass) {
-		String sql = "UPDATE [User] SET password = ? WHERE id = ?";
+		EntityManager em = JPAConfig.getEnityManager();
+	    EntityTransaction tx = em.getTransaction();
+	    try {
+	        tx.begin();
+
+	        em.createQuery(
+	            "UPDATE User u SET u.password = :pwd WHERE u.id = :id"
+	        )
+	        .setParameter("pwd", newpass)
+	        .setParameter("id", id)
+	        .executeUpdate();
+
+	        tx.commit();
+	    } catch (Exception e) {
+	        if (tx.isActive()) tx.rollback();
+	        throw e;
+	    } finally {
+	        em.close();
+	    }
+		
+	}
+
+	@Override
+	public User get(String username) {
+		EntityManager em = JPAConfig.getEnityManager();
+		TypedQuery<User> q = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
+		q.setParameter("username", username);
+		return q.getResultStream().findFirst().orElse(null);
+		
+	}
+
+	@Override
+	public void update(User user) {
+		EntityManager enma = JPAConfig.getEnityManager();
+		EntityTransaction trans = enma.getTransaction();
 		try {
-			conn = new DBConnectionSQLServer().getConnectionW();
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, newpass);
-			ps.setInt(2, id);
-			ps.executeUpdate();
+			trans.begin();
+			enma.merge(user);
+			trans.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			trans.rollback();
+		} finally {
+			enma.close();
 		}
 		
 	}

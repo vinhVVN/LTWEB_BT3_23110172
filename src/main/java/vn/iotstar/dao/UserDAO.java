@@ -1,6 +1,6 @@
 package vn.iotstar.dao;
 
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 
 public interface UserDAO {
 	public User get(String username);
@@ -8,8 +8,9 @@ public interface UserDAO {
 	void insert(User user);
 	boolean checkExistEmail(String email);
 	boolean checkExistUsername(String username);
-	boolean checkExistPhone(String phone);
 	User findByEmail(String email);
 	
 	void updatePassword(int id, String newpass);
+	
+	void update(User user);
 }

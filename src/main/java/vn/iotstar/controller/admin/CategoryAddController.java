@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import vn.iotstar.model.Category;
+import vn.iotstar.entity.Category;
 import vn.iotstar.model.Product;
 import vn.iotstar.service.CategoryService;
 import vn.iotstar.service.impl.CategoryServiceImpl;
@@ -42,7 +42,7 @@ public class CategoryAddController extends HttpServlet{
 
 			String name = req.getParameter("catename");
 			
-			category.setCatename(name);
+			category.setCategoryName(name);
 			
 			Part filePart = req.getPart("icon");
 			
@@ -75,10 +75,10 @@ public class CategoryAddController extends HttpServlet{
 	          filePart.write(filePath.toString());
 
                 // Lưu đường dẫn vào model 
-                category.setIcon(fileName);
+                category.setImages(fileName);
             } else {
                 // Người dùng không upload file mới
-            	category.setIcon(null);
+            	category.setImages(null);
             }
 
             cateService.insert(category);

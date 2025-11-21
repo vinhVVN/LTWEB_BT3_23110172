@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 
 
 @WebServlet(urlPatterns = {"/waiting"})
@@ -22,11 +22,11 @@ public class WaitingController extends HttpServlet{
 		if (session != null && session.getAttribute("account") != null) {
 			User user = (User) session.getAttribute("account");
 			req.setAttribute("username", user.getUsername());
-			if (user.getRoleid() == 1) {
+			if (user.isAdmin()) {
 				resp.sendRedirect(req.getContextPath() + "/admin/home");
 			}
 			else {
-				resp.sendRedirect(req.getContextPath() + "/home");
+				resp.sendRedirect(req.getContextPath() + "user/profile");
 			}
 		}
 		else {

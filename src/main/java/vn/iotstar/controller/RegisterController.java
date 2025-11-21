@@ -53,13 +53,6 @@ public class RegisterController extends HttpServlet {
 			return;
 		}
 		
-		if (service.checkExistPhone(phone)) {
-			alertMsg = "SĐT đã tồn tại!";
-			req.setAttribute("alert", alertMsg);
-			req.getRequestDispatcher("views/register.jsp").forward(req, resp);
-			return;
-		}
-		
 		boolean isSuccess = service.register(email, password, username, fullname, phone);
 		if (isSuccess) {
 			req.setAttribute("alert", alertMsg);

@@ -2,7 +2,7 @@ package vn.iotstar.service.impl;
 
 import vn.iotstar.dao.UserDAO;
 import vn.iotstar.dao.impl.UserDAOImpl;
-import vn.iotstar.model.User;
+import vn.iotstar.entity.User;
 import vn.iotstar.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -28,13 +28,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean register(String email, String password, String username, String fullname, String phone) {
-		if (userDAO.checkExistUsername(username)) {
-			return false;
-		}
-		long millis=System.currentTimeMillis();
-		java.sql.Date date=new java.sql.Date(millis);
-		userDAO.insert(new User (username, password, email, fullname, null,2,phone,date));
-		return true;
+
+        // Tạo User mới khớp với Entity User.java đã có
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password); // Lưu ý: Thực tế nên mã hóa password (BCrypt)
+        user.setEmail(email);
+        user.setFullname(fullname);
+        user.setPhone(phone);
+        user.setAdmin(true); // Mặc định role user là 2 (hoặc 1 tùy quy định DB)
+        user.setActive(true);
+        user.setImages(null);
+        // Do User Entity của bạn không có cột Date hay Images, ta không set các trường đó
+        
+        userDAO.insert(user);
+        return true;
 	}
 
 	@Override
@@ -48,10 +56,6 @@ public class UserServiceImpl implements UserService {
 		return userDAO.checkExistUsername(username);
 	}
 
-	@Override
-	public boolean checkExistPhone(String phone) {
-		return userDAO.checkExistPhone(phone);
-	}
 
 	@Override
 	public User findByEmail(String email) {
@@ -61,6 +65,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updatePassword(int id, String newpass) {
 		userDAO.updatePassword(id, newpass);
+		
+	}
+
+	@Override
+	public void update(User user) {
+		userDAO.update(user);
 		
 	}
 

@@ -19,7 +19,11 @@ public class CategoryDeleteController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String id = req.getParameter("id");
-		cateService.delete(Integer.parseInt(id));
-		resp.sendRedirect(req.getContextPath() + "/admin/category/list");
+        try {
+            cateService.delete(Integer.parseInt(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        resp.sendRedirect(req.getContextPath() + "/admin/category/list");
 	}
 }

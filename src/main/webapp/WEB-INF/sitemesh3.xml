@@ -1,0 +1,5 @@
+<sitemesh>
+    
+    <mapping path="/login" exclude="true"/>
+    <mapping path="/register" exclude="true"/>
+</sitemesh>
